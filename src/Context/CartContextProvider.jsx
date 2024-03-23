@@ -7,7 +7,6 @@ const CartContextProvider = ({ children }) => {
   const [cart, setCart] = useState( JSON.parse( localStorage.getItem("cart") ) || [] ); 
 
 const addToCart = (product, quantity) => {
-
   let existe = isInCart(product.id);
 product.quantity = quantity;
   if (existe) {
@@ -28,11 +27,7 @@ product.quantity = quantity;
   } else {
     setCart([...cart, product]);
     localStorage.setItem("cart", JSON.stringify([...cart, product]) );
-
   }
-
-
-
 };
 
   const clearCart = () => {
