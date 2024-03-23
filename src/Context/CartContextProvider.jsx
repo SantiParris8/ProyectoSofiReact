@@ -7,28 +7,17 @@ const CartContextProvider = ({ children }) => {
   const [cart, setCart] = useState( JSON.parse( localStorage.getItem("cart") ) || [] ); 
 
 const addToCart = (product, quantity) => {
-  console.log('cart1')
-  console.log(cart)
-  
-  console.log('product')
-  console.log(product)
-
-  console.log('quantity')
-  console.log(quantity)
 
   let existe = isInCart(product.id);
 product.quantity = quantity;
   if (existe) {
-    console.log('existe')
     let newArray = cart.map((elemento) => {
       if (elemento.id === product.id) {
-        console.log('eid is pid')
         return {
           ...elemento,
           quantity: elemento.quantity + product.quantity,
         };
       } else {
-        console.log('else')
         return elemento;
       }
     });
@@ -36,15 +25,10 @@ product.quantity = quantity;
 
     setCart(newArray);
     localStorage.setItem("cart", JSON.stringify(newArray) );
-
-    console.log('cart2')
-    console.log(newArray)
   } else {
-    console.log('else2')
     setCart([...cart, product]);
     localStorage.setItem("cart", JSON.stringify([...cart, product]) );
-    console.log('cart3')
-    console.log(JSON.stringify([...cart, product]))
+
   }
 
 
