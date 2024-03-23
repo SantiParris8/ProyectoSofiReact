@@ -19,7 +19,7 @@ const addToCart = (product, quantity) => {
   let existe = isInCart(product.id);
 product.quantity = quantity;
   if (existe) {
-    console.log('')
+    console.log('existe')
     let newArray = cart.map((elemento) => {
       if (elemento.id === product.id) {
         console.log('eid is pid')
@@ -39,15 +39,19 @@ product.quantity = quantity;
 
     setCart(newArray);
     localStorage.setItem("cart", JSON.stringify(newArray) );
+
+    console.log('cart2')
+    console.log(newArray)
   } else {
     console.log('else2')
     setCart([...cart, product]);
     localStorage.setItem("cart", JSON.stringify([...cart, product]) );
+    console.log('cart3')
+    console.log(JSON.stringify([...cart, product]))
   }
 
 
-  console.log('cart2')
-  console.log(cart)
+
 };
 
   const clearCart = () => {
