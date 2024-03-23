@@ -10,6 +10,8 @@ import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import TextField from '@mui/material/TextField';
+
 
 const ItemDetailContainer = () => {
   const [product, setProduct] = useState(null);
@@ -68,7 +70,9 @@ const ItemDetailContainer = () => {
           >
             <RemoveIcon />
           </Button> 
-          <input type="number" value={quantity} readOnly /> 
+          <TextField
+  type="number"
+  value={quantity} />
           <Button 
             variant="outlined" 
             onClick={() => setQuantity(quantity + 1)}
