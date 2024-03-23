@@ -72,7 +72,7 @@ const ItemDetailContainer = () => {
           </Button> 
           <TextField
   type="number"
-  value={quantity} />
+  value={quantity} style={{ width: '18px!important' }}/>
           <Button 
             variant="outlined" 
             onClick={() => setQuantity(quantity + 1)}
