@@ -29,10 +29,7 @@ product.quantity = quantity;
         };
       } else {
         console.log('else')
-        return {
-          
-          elemento
-        };
+        return elemento;
       }
     });
 
