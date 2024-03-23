@@ -1,71 +1,90 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
-import './ItemDetail.css';
 import { db } from '../../../FirebaseConfig';
-import { collection , getDocs, query, where } from "firebase/firestore"
+import { collection, getDocs, query, where } from "firebase/firestore"
 import { CartContext } from '../../../Context/CartContextProvider';
 import { CardSkeleton } from '../../common/CardSkeleton';
 
-const ItemDetailContainer = () => {
+// Material-UI Imports
+import Button from '@mui/material/Button';
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
+const ItemDetailContainer = () => {
   const [product, setProduct] = useState(null);
-  const [quantity, setQuantity] = useState(1); // Initial quantity is 1
+  const [quantity, setQuantity] = useState(1);
   const { productId } = useParams();
   const { addToCart } = useContext(CartContext);
 
   useEffect(() => {
+    let productsCollection = collection(db, "products");
+    let consulta = productsCollection;
 
-    let productsCollection = collection( db, "products" );
-    let consulta = productsCollection ;
-
-    if(productId){
+    if (productId) {
       let productsCollectionFiltered = query(
-        productsCollection, 
-        where( "id" , "==" , productId )
-        );
-
+        productsCollection,
+        where("id", "==", productId)
+      );
       consulta = productsCollectionFiltered;
-    } else{
+    } else {
       consulta = productsCollection;
     }
 
-    getDocs( consulta )
-    .then((res) => {
-      let arrayLindo = res.docs.map((elemento, index) => {
-        return { ...elemento.data(), id: elemento.id, key: index };
-      });
+    getDocs(consulta)
+      .then((res) => {
+        let arrayLindo = res.docs.map((elemento, index) => {
+          return { ...elemento.data(), id: elemento.id, key: index };
+        });
 
-      // Aquí, toma el primer elemento del array
-      setProduct(arrayLindo[0]);
-      
-    })
-    .finally(() => console.log('finish'));
-
+        setProduct(arrayLindo[0]);
+      })
+      .finally(() => console.log('finish'));
   }, [productId]);
 
   if (!product) {
-    return <>
-    <CardSkeleton />
-  </>;
+    return (
+      <>
+        <CardSkeleton />
+      </>
+    );
   }
 
   return (
     <div className="item-detail-container">
       <div className="item-image">
         <img src={`../../../assets/${product.imageName}.${product.extension}`} alt={product.title} />
-      </div>  
+      </div> 
       <div className="item-info">
         <h2>{product.title}</h2>
         <p>{product.desc}</p>
         <h3>Price: ${product.price}</h3>
 
-        <div className="quantity-control">
-  <button onClick={() => setQuantity(Math.max(quantity - 1, 1))}>-</button> 
-  <input type="number" value={quantity} readOnly /> 
-  <button onClick={() => setQuantity(quantity + 1)}>+</button> 
-</div>
+        <div className="quantity-control" style={{ display: 'flex', alignItems: 'center', marginBottom: '15px' }}>
+          <Button 
+            variant="outlined" 
+            onClick={() => setQuantity(Math.max(quantity - 1, 1))}
+            style={{ marginRight: '5px' }}
+          >
+            <RemoveIcon />
+          </Button> 
+          <input type="number" value={quantity} readOnly /> 
+          <Button 
+            variant="outlined" 
+            onClick={() => setQuantity(quantity + 1)}
+            style={{ marginLeft: '5px' }}
+          >
+            <AddIcon />
+          </Button> 
+        </div>
 
-        <button onClick={() => addToCart(product, quantity)}>Agregar al carrito</button>
+        <Button 
+          variant="contained" 
+          onClick={() => addToCart(product, quantity)}
+          endIcon={<ShoppingCartIcon />}
+        >
+          Agregar al carrito
+        </Button>
       </div>
     </div>
   );
